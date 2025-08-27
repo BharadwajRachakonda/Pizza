@@ -1,4 +1,4 @@
-const endpoint = "http://localhost:4000";
+const endpoint = "https://pizza-six-alpha.vercel.app";
 
 // methods.ts
 export const updateCatalog = async (catalogItems: any[]) => {
