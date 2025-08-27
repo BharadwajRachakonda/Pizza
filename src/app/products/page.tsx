@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, Suspense } from "react";
 import { useSearchParams } from "next/navigation"; // ✅ for reading query params
 import Image from "next/image";
 import { getImageURL } from "../lib/methods";
@@ -64,4 +64,12 @@ function Page() {
   );
 }
 
-export default Page;
+function Final() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Page />
+    </Suspense>
+  );
+}
+
+export default Final;
