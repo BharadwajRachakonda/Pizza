@@ -6,6 +6,7 @@ import ErrorContext from "../error/errorcontext";
 import { useDebouncedCallback } from "use-debounce";
 import UserContext from "@/app/context/user/usercontext";
 import toast from "react-hot-toast";
+import { deleteCart } from "@/app/lib/methods";
 
 type CatalogItem = {
   _id: string;
@@ -66,6 +67,11 @@ function CatalogItems({ children }: { children: React.ReactNode }) {
       .filter((item) => item.count > 0);
 
     setCatalog(updatedCatalog);
+    console.log("Updated catalog:", updatedCatalog);
+    if (updatedCatalog.length === 0) {
+      console.log("deleting...");
+      await deleteCart();
+    }
   };
 
   const debouncedSave = useDebouncedCallback(async (catalog) => {

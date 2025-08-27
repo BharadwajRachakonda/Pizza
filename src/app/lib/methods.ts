@@ -99,3 +99,14 @@ export const getItem = async (itemId: string) => {
   });
   return res.json();
 };
+
+export const deleteCart = async () => {
+  const res = await fetch(`${endpoint}/cart`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  return res.json();
+};
