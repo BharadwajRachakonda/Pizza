@@ -1,4 +1,4 @@
-const endpoint = "https://pizza-six-alpha.vercel.app";
+const endpoint = "https://internship-backend-two.vercel.app";
 
 // methods.ts
 export const updateCatalog = async (catalogItems: any[]) => {
