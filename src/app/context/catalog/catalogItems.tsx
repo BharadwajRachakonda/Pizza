@@ -6,7 +6,7 @@ import ErrorContext from "../error/errorcontext";
 import { useDebouncedCallback } from "use-debounce";
 import UserContext from "@/app/context/user/usercontext";
 import toast from "react-hot-toast";
-import { deleteCart } from "@/app/lib/methods";
+import { deleteCart, hasSession } from "@/app/lib/methods";
 
 type CatalogItem = {
   _id: string;
@@ -18,7 +18,7 @@ function CatalogItems({ children }: { children: React.ReactNode }) {
   const [catalog, setCatalog] = useState<CatalogItem[]>([]); // ✅ always default to []
 
   const { setError } = useContext(ErrorContext);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const getCount = () => {
     const counts: { [key: string]: number } = {};
@@ -31,8 +31,13 @@ function CatalogItems({ children }: { children: React.ReactNode }) {
 
   const add = async (_id: string) => {
     if (!user) {
-      toast.error("Session time out, pls login");
-      return;
+      const _hasSession = await hasSession();
+      if (!_hasSession.hasSession) {
+        toast.error("Session time out, pls login");
+        return;
+      } else {
+        setUser(_hasSession.hasSession);
+      }
     }
 
     console.log("Adding item to cart:", _id);
@@ -53,8 +58,13 @@ function CatalogItems({ children }: { children: React.ReactNode }) {
 
   const subtract = async (_id: string) => {
     if (!user) {
-      toast.error("Session time out, pls login");
-      return;
+      const _hasSession = await hasSession();
+      if (!_hasSession.hasSession) {
+        toast.error("Session time out, pls login");
+        return;
+      } else {
+        setUser(_hasSession.hasSession);
+      }
     }
 
     const itemIndex = (catalog ?? []).findIndex((item) => item._id === _id);
@@ -76,6 +86,14 @@ function CatalogItems({ children }: { children: React.ReactNode }) {
 
   const debouncedSave = useDebouncedCallback(async (catalog) => {
     const data = await updateCatalog(catalog);
+    const _hasSession = await hasSession();
+    if (!user) {
+      if (!_hasSession.hasSession) {
+        toast.error("Session time out pls login");
+      } else {
+        setUser(_hasSession.hasSession);
+      }
+    }
     if (data?.error) {
       setError(data.error);
       return;
