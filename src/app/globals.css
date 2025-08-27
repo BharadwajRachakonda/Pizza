@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color: white;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--cursive);
+  --font-mono: var(--cursive);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.glass {
+  @apply absolute inset-0 rounded-full backdrop-blur-md backdrop-brightness-50;
+}
+
+.glass2::before {
+  content: "";
+  position: absolute;
+  inset: 0rem; /* same as inset-1 */
+  border-radius: 9999px; /* same as rounded-full */
+  backdrop-filter: blur(12px); /* same as backdrop-blur-md */
+  filter: brightness(0.7); /* same as backdrop-brightness-50 */
+  transform: translateY(3px);
 }

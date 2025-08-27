@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { geist } from "../../font";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Navbar from "./components/navbar";
+import Background from "./components/background";
+import User from "./context/user/user";
+import CatalogItems from "./context/catalog/catalogItems";
+import Error from "./context/error/error";
+import { Toaster } from "react-hot-toast";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,12 +20,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body className={`${geist.variable} antialiased tracking-widest`}>
+          <div className="fixed top-0 left-0 p-2 bg-white rounded-br-2xl shadow-2xs">
+            <Image src="/Dominos.png" alt="Dominos" width={100} height={100} />
+          </div>
+          <Toaster position="top-right" />
+          <Background />
+          <Error>
+            <User>
+              <CatalogItems>{children}</CatalogItems>
+            </User>
+          </Error>
+        </body>
+      </html>
+      <Navbar />
+    </>
   );
 }
